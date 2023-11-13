@@ -1,10 +1,17 @@
-from .models import Categorie,Product,Order
+from .models import Categorie,Product,Order,Product_image
 from django import forms
 from django.core import validators
 class categoryForm(forms.ModelForm):
     class Meta():
         model=Categorie
         fields='__all__'
+class ProductImageForm(forms.ModelForm):
+    class Meta:
+        model = Product_image
+        fields = ['image']
+        widgets ={
+            'image':forms.ClearableFileInput(attrs={'multiple':True})
+        }
 class OrderForm(forms.ModelForm):
     # email = forms.CharField(widget=forms.EmailInput, label='')
     class Meta:

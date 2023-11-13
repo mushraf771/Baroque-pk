@@ -201,61 +201,84 @@ comment if you want to work with Api Views
 ''' Homepage class based view'''
 class Barque(View):
    def get(self, request):
-      images=Categorie.objects.all()
-      return render(request,'home.html',{"images":images})
+      cart = request.session.get('cart')
+      if not cart:
+         request.session['cart'] = {}
+      # hint --> should return a list of all categories 
+      categories=Categorie.objects.all()
+      return render(request,'home.html',{"categories":categories})
+   
 ''' Baroque 2nd page products list of selected Categorie '''
 """ function based view """
 def product(request,id): 
-   cat=Categorie.objects.filter(id=id)[0]
+   # hint --> should return a specific targeted category 
+   category=Categorie.objects.filter(id=id)[0]
+   # hint --> should return a list of all products of specific category 
    products=Product.objects.filter(category_id=id)
-   return render(request,'page2.html',{'products':products,'cat':cat}) 
+   return render(request,'page2.html',{'products':products,'category':category}) 
 
 ''' Baroque 3 page selected product details '''
 """ class based view """
 class DetailsView(View):
    def get(self,request,pk,category_id):
+      # hint --> check product added to cart or not 
       cart = request.session.get('cart')
       if not cart:
          request.session['cart'] = {}
-      prod = Product.objects.get(pk=pk)
+      product = Product.objects.get(pk=pk)
       # hint --> should return a list sorted by similarity 
-      may=Product.objects.filter(category_id=category_id).all().exclude(pk=pk)
-      all = Product_image.objects.filter(Product_images_id=pk) 
-      cat = Categorie.objects.filter(pk=category_id)[0]
-      # print(cat)
-      pd = Product.objects.filter(pk=pk)[0]
-      # print(pd)
-      return render(request,'page3.html',{'prod': prod,'pros':all,'may':may,'cat':cat,'pd':pd })
+      also_like=Product.objects.filter(category_id=category_id).all().exclude(pk=pk)
+      # hint --> should return all linked images of product 
+      product_images = Product_image.objects.filter(Product_images_id=pk)
+      # hint --> should return category of product for breadcrumb
+      category = Categorie.objects.filter(pk=category_id)[0]
+      # hint --> should return product name for breadcrumb
+      product_name = Product.objects.filter(pk=pk)[0]
+      return render(request,'page3.html',{'product': product,'product_images':product_images,'also_like':also_like,'category':category,'product_name':product_name })
   
 ''' Baroque Manage Cart Page '''
 """ class based view """
 class Cart(View):
    def post(self,request):
+      # hint --> requests 
       product= request.POST.get('product')
       remove= request.POST.get('remove')
       cart = request.session.get('cart')
       delete= request.POST.get('delete')
+      # hint --> check cart
       if cart:
+         # hint --> check quantity of product in cart
          quantity = cart.get(product)
          if quantity:
+            # hint --> if request is remove and quantity of product is less then or equal to 1
             if remove:
+               # hint --> then remove item from list by using pop
                if quantity<=1:
                   cart.pop(product)
+               # hint --> if quantity is grater then 1 then subtract 1 from the quantity 
                else:
                   cart[product] = quantity - 1
+            # hint --> if quantity is equal to or grater then 0 then add 1+ to the quantity 
             else:
                 cart[product] = quantity + 1
+         # hint --> if quantity is equal to 0 or product not in cart then set product to cart and quantity is equal to 1 
          else:
             cart[product]  = 1
+      # hint --> if item not in cart 
       else:
          cart = {}
+         # hint --> if quantity is equal to 0 or product not in cart then set product to cart and quantity is equal to 1 
          cart[product] = 1
       request.session['cart']=cart
       return redirect('/cart')
    def get(self, request):
+      # hint --> get all items in cart keys 
       cart= request.session.get('cart')
       if cart:
+         # hint --> make list of ids from cart added items 
          ids= list(request.session.get('cart').keys())
+         # hint --> filters product by ids from cart keys
+         # hint --> id__in method lookup all matching ids 
          products = Product.objects.filter(id__in=ids)
          return render(request,'cart.html',{'products':products})
       return render(request,'cart.html',)    
@@ -264,18 +287,18 @@ class Cart(View):
 """ class based view """
 class Orders(View):
    def post(self, request):   
-      fm= OrderForm(request.POST)
+      data= OrderForm(request.POST)
       orderform=OrderForm(label_suffix='')
       cart= request.session.get('cart')
       products = Product.objects.filter(id__in=list(cart.keys())) 
-      if fm.is_valid():
-         fname= fm.cleaned_data['fname']
-         lname= fm.cleaned_data['lname']
-         email= fm.cleaned_data['email']
-         phone= fm.cleaned_data['phone']
-         address= fm.cleaned_data['address']
-         region= fm.cleaned_data['region']
-         city= fm.cleaned_data['city']
+      if data.is_valid():
+         fname= data.cleaned_data['fname']
+         lname= data.cleaned_data['lname']
+         email= data.cleaned_data['email']
+         phone= data.cleaned_data['phone']
+         address= data.cleaned_data['address']
+         region= data.cleaned_data['region']
+         city= data.cleaned_data['city']
          for product in products:
             order =Order(fname=fname,lname=lname,email=email,
             phone=phone,address=address,city=city,region=region,product=Product(product.id),product_price=product.product_price,

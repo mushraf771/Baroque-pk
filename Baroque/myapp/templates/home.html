@@ -1,25 +1,29 @@
 {% extends 'base.html' %}
    {% block title %}BAROQUE{% endblock title %}
     {% load static %}
-    {% block basecss %}
+    {% comment %} {% block basecss %}
     <link rel="stylesheet" href="{% static 'css/broque.css' %}">
-    {% endblock basecss %}
-    {% block townav %}
-      <nav class="navbar bg-dark">
-          <span class="navbar-text mx-auto">
+    {% endblock basecss %} {% endcomment %}
+    {% block Second_Navbar %}
+    <nav class="bg-dark d-flex">
+    <marquee width="100%" direction="left" height="">
+        <span class="navbar-text mx-auto container-fluid">
           <a  href=" {% url 'home' %} " class=" text-uppercase text-decoration-none text-white">Free Shipping in pakistan</a >
           </span>
-          </nav>
-              <nav class="navbar bg-light">
-          <span class="navbar-text mx-auto">
-          <a  href=" {% url 'home' %} " class=" text-capitalize text-black text-decoration-none">Help line : <i class="fab fa-whatsapp" aria-hidden="true"></i> +03028976771</a >
+        {% comment %} </marquee>
+        <marquee width="100%" direction="left" height=""> {% endcomment %}
+          {% comment %} </nav> {% endcomment %}
+              {% comment %} <nav class="navbar bg-light"> {% endcomment %}
+          <span class="navbar-text mx-auto container-fluid">
+          <a  href=" {% url 'home' %} " class=" text-capitalize text-white text-decoration-none">Help line : <i class="fab fa-whatsapp" aria-hidden="true"></i> +03028976771</a >
           </span>
-          </nav>
-      {% endblock townav %}
+        </marquee>
+      </nav>
+      {% endblock Second_Navbar %}
 {% block content %}
 
 
-  <div class="bd-example container">
+  <div class="bd-example">
     <div id="carouselExampleCaptions" class="carousel slide" data-ride="carousel">
       <ol class="carousel-indicators">
         <li data-target="#carouselExampleCaptions" data-slide-to="0" class="active"></li>
@@ -71,13 +75,13 @@
   </div>
   <section class="container mx-auto">
     <div class="row col-12 pt-4 ">
-      {% for x in images %}
+      {% for category in categories %}
       
       <div class="pt-3 mx-auto col-12 col-sm-4 col-sm-pt-4   rounded">
-        <a href=" {% url 'show_product' x.id %}" class=" text-dark text-uppercase text-decoration-none">
-        <img src="{{x.image.url}}" alt="image not found" class="img-fluid shadow-sm rounded"/>
+        <a href=" {% url 'show_product' category.id %}" class=" text-dark text-uppercase text-decoration-none">
+        <img src="{{category.image.url}}" alt="image not found" class="img-fluid shadow-sm rounded"/>
         <div class="description  pt-4">
-          <span class="type  font-weight-bold">{{x.title}}</span><br>
+          <span class="type  font-weight-bold">{{category.title}}</span><br>
           <span class="shop-now">shop now</span>
         </div>
       </a>
@@ -87,17 +91,16 @@
   </section> 
 
 
-<section class="container mx-auto pt-4"> 
+<section class="container-fluid mx-auto pt-4"> 
     <div class="row pt-5 ">
       <div class=" grid2 pt-3 mx-auto col-12 col-sm-12 col-md-3 col-lg-3 col-xl-3 col-sm-pt-4">
         <img src="https://cdn.shopify.com/s/files/1/2277/5269/files/try3.png?v=1618555391" alt=""
           class="img-fluid grid-icon mx-auto">
         <span class="shop-now">UNSTICHED</span>
         <br>
-        <span class="description-text">YOU CAN USE PERFECT SIZE TO BE
-          STITCHED TO YOUR PERFECT FIT
-          BY USING OUR CUSTOM
-          STITCHING.
+        <span class="description-text"> you can use perfect  size to be stiched to your perfect
+           fit by using our custom stiching.
+    
         </span>
       </div>
 
@@ -106,7 +109,7 @@
           class="img-fluid grid-icon mx-auto">
         <span class="shop-now">order cancelation</span>
         <br>
-        <span class="description-text">YOU CAN USE cancel your order by
+        <span class="description-text">you can cancel your order by
           filling the form before it is
           dispatched
         </span>
@@ -124,7 +127,7 @@
       </div>
 
 
-      <div class=" grid21 pt-3 mx-auto col-12 col-sm-12 col-md-3 col-lg-3 col-xl-3 col-sm-pt-4">
+      <div class=" grid2 pt-3 mx-auto col-12 col-sm-12 col-md-3 col-lg-3 col-xl-3 col-sm-pt-4">
         <img src="https://cdn.shopify.com/s/files/1/2277/5269/files/try4.png?v=1618555440" alt=""
           class="img-fluid grid-icon mx-auto">
         <span class="shop-now">free shipping</span>

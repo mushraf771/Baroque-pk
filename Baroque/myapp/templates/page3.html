@@ -15,8 +15,8 @@
           <nav aria-label="breadcrumb">
             <ol class="breadcrumb">
               <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
-              <li class="breadcrumb-item text-primary"><a href="{% url 'collection' %}">{{cat}}</a></li>
-              <li class="breadcrumb-item text-primary"><a href="">{{pd}}</a></li>
+              <li class="breadcrumb-item text-primary"><a href="{% url 'collection' %}">{{category}}</a></li>
+              <li class="breadcrumb-item text-primary"><a href="">{{product_name}}</a></li>
             </ol>
           </nav>
     </section>
@@ -32,17 +32,17 @@
                 <div class=" row">
                     
                     <div class=" d-flex justify-content-center zoomArea mx-auto" style="width: 550px; height:480px;">
-                        <img src="{{ prod.product_img.url }}"style="" id="NZoomImg" data-NZoomscale="3.0" class="img-thumbnail  " alt="Responsive image"/>
+                        <img src="{{ product.product_img.url }}"style="" id="NZoomImg" data-NZoomscale="3.0" class="img-thumbnail  " alt="Responsive image"/>
                     
                     </div>
                 </div>
                 <div class="row pt-1 my-1 mx-auto ">
 
                     <div class="owl-carousel col-sm-12  d-inline-flex justify-content-between">
-                        {% for prod in pros %}
-                        <img src="{{ prod.images.url }}" id="{{ prod.id }}"
+                        {% for product in product_images %}
+                        <img src="{{ product.images.url }}" id="{{ product.id }}"
                             class=" item img-thumbnail justify-content-around" alt="Responsive image" width="100px"
-                            onclick="document.getElementById('NZoomImg').src='{{prod.images.url}}'" />
+                            onclick="document.getElementById('NZoomImg').src='{{product.images.url}}'" />
                         {% endfor %}
                     </div>
 
@@ -62,18 +62,18 @@
             <div class="col-12 col-md-5 offset-1 img-thumbnail px-3">
                 <div class="">     
                         <div class="">
-                            <h4 class="text-uppercase">{{ prod.product_name }}</h4>
+                            <h4 class="text-uppercase">{{ product.product_name }}</h4>
                         </div>
                                 <div class="d-flex my-2 py-2 justify-content-between">
                                     <h5 class="fw-light">Rs : </h5><span
-                                        class="">{{prod.product_price}}</span>
+                                        class="">{{product.product_price}}</span>
                                 </div>
                                 <hr style="height:3px text-black " />
                     
                     
                         <div class=" d-flex justify-content-between py-2">
                             <strong class="float-left">Availability</strong><span
-                                class="float-right text-right">{{prod.availability}}</span>
+                                class="float-right text-right">{{product.availability}}</span>
                         </div>
                     
                         <hr style="height:3px text-black " />
@@ -84,7 +84,7 @@
                         <hr style="height:3px text-black " />
                     
                         <div class="d-flex justify-content-between  py-2">
-                            <strong class="float-left">Size</strong><span class="float-right text-right"> {{prod.product_size}}</span>         
+                            <strong class="float-left">Size</strong><span class="float-right text-right"> {{product.product_size}}</span>         
                         </div>
                         <hr style="height:3px text-black " />
 
@@ -92,11 +92,11 @@
 
                         <form method="POST" action="{% url 'cart' %}">
                             {% csrf_token %}
-                            <input type="text" hidden name="product" value="{{ prod.pk }}" />
+                            <input type="text" hidden name="product" value="{{ product.pk }}" />
                             <input type="submit" value="Add To Cart" class=" btn btn-dark form-control"  />
                         </form>
                 
-                        {% comment %} {{ prod | is_in_cart:request.session.cart }} {% endcomment %}
+                        {% comment %} {{ product | is_in_cart:request.session.cart }} {% endcomment %}
                         {% comment %} <a href=" ">add cart</a> {% endcomment %}
                         <a href="" class="btn btn-dark form-control mt-2">Add to Wishlist</a>
 
@@ -117,7 +117,7 @@
                                     </h6>
                                 </div>
                                 <div id="collapseOne" class="collapse" role="tabpanel" aria-labelledby="headingOne">
-                                    <div class="card-body">{{ prod.product_description }}</div>
+                                    <div class="card-body">{{ product.product_description }}</div>
                                 </div>
                             </div>
                         </div>
@@ -201,13 +201,13 @@
     <hr style="width:40px; height: 5px;" class="mx-auto">
    
         <div class="row col-12 pt-4 ">
-        {% for x in may|slice:":3" %}
+        {% for product in also_like|slice:":3" %}
         {% comment %} {% if x >= 3 %} {% endcomment %}
           <div class="pt-3 mx-auto col-12 col-sm-4 col-sm-pt-4   rounded">
-            <a href=" {% url 'product_details' x.pk x.category_id %}" class=" text-dark text-uppercase text-decoration-none">
-            <img src="{{x.product_img.url}}" alt="image not found" class="img-fluid shadow-sm rounded"/>
+            <a href=" {% url 'product_details' product.pk product.category_id %}" class=" text-dark text-uppercase text-decoration-none">
+            <img src="{{product.product_img.url}}" alt="image not found" class="img-fluid shadow-sm rounded"/>
             <div class="description  pt-4">
-              <span class="type  font-weight-bold">{{x.product_name}}</span><br>
+              <span class="type  font-weight-bold">{{product.product_name}}</span><br>
               <span class="shop-now">shop now</span>
             </div>
           </a>

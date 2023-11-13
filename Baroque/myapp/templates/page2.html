@@ -11,7 +11,7 @@
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
-            <li class="breadcrumb-item text-primary active"><a href="">{{cat}}</a></li>
+            <li class="breadcrumb-item text-primary active"><a href="">{{category}}</a></li>
             
         </ol>
     </nav>
@@ -111,15 +111,15 @@
         </div>
 
         <div class="col-12 col-sm-9 row mx-auto  ">
-            {% for prod in products %}
+            {% for product in products %}
         
             
             <div class="col-12 col-md-4 mx-auto">
-            <a href="{% url 'product_details' prod.pk prod.category_id %}" class="text-uppercase text-decoration-none">
-                <img src="{{prod.product_img.url}}" alt="image not found" class="img-fluid  pt-4">
+            <a href="{% url 'product_details' product.pk product.category_id %}" class="text-uppercase text-decoration-none">
+                <img src="{{product.product_img.url}}" alt="image not found" class="img-fluid  pt-4">
                 <div class="description  pt-2">
-                    <span class=" type text-black text-uppercase">{{prod.product_name}}</span><br>
-                    <span class="type text-black">{{prod.product_price}}</span><br>
+                    <span class=" type text-black text-uppercase">{{product.product_name}}</span><br>
+                    <span class="type text-black">{{product.product_price}}</span><br>
                     <span class="shop-now">Details</span>
             </a></div>
         </div>
